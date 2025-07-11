@@ -1,4 +1,4 @@
-// puppeteer-proxy-server.js
+// index.js
 
 const express = require("express");
 const puppeteer = require("puppeteer");
@@ -24,7 +24,13 @@ app.get("/price/:chain/:token", async (req, res) => {
   const url = `https://dex.coinmarketcap.com/token/${chain}/${token}/`;
 
   try {
-    const browser = await puppeteer.launch({ headless: "new" });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+      ],
+    });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: "networkidle2", timeout: 20000 });
 
@@ -42,6 +48,26 @@ app.get("/price/:chain/:token", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("✅ Puppeteer proxy server is running on http://localhost:3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`✅ Puppeteer proxy server running on http://localhost:${PORT}`);
 });
+
+/* package.json */
+/*
+{
+  "name": "coinmarketcap-proxy",
+  "version": "1.0.0",
+  "description": "Proxy server using Puppeteer to scrape token prices from CoinMarketCap DEX.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "puppeteer": "^21.3.8"
+  }
+}
+*/
