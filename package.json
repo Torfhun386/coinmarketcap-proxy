@@ -2,9 +2,9 @@
   "name": "puppeteer-dex-price-proxy",
   "version": "1.0.0",
   "description": "Proxy server using Puppeteer to scrape token prices from CoinMarketCap DEX.",
-  "main": "puppeteer-proxy-server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node puppeteer-proxy-server.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "MIT",
